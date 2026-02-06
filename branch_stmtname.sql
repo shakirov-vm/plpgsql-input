@@ -1,0 +1,179 @@
+DO $$
+BEGIN
+	EXECUTE $q$
+		DROP FUNCTION IF EXISTS f_assign();
+		DROP FUNCTION IF EXISTS f_if();
+		DROP FUNCTION IF EXISTS f_case();
+		DROP FUNCTION IF EXISTS f_while();
+		DROP FUNCTION IF EXISTS f_fori();
+		DROP FUNCTION IF EXISTS f_fors();
+		DROP FUNCTION IF EXISTS f_foreach();
+		DROP FUNCTION IF EXISTS f_exit();
+		DROP FUNCTION IF EXISTS f_execsql();
+		DROP FUNCTION IF EXISTS f_dynexec();
+		DROP FUNCTION IF EXISTS f_dynfors();
+		DROP FUNCTION IF EXISTS f_getdiag();
+		DROP FUNCTION IF EXISTS f_open();
+		DROP FUNCTION IF EXISTS f_fetch();
+		DROP FUNCTION IF EXISTS f_close();
+		DROP FUNCTION IF EXISTS f_perform();
+		DROP FUNCTION IF EXISTS f_commit();
+		DROP FUNCTION IF EXISTS f_rollback();
+
+		CREATE FUNCTION f_assign() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE v int;
+		BEGIN
+			v := 1/0;
+		END;
+		$fn$;
+		CREATE FUNCTION f_if() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			IF 1/0 = 0 THEN
+				NULL;
+			END IF;
+		END;
+		$fn$;
+		CREATE FUNCTION f_case() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			CASE 1/0
+				WHEN 1 THEN NULL;
+			END CASE;
+		END;
+		$fn$;
+		CREATE FUNCTION f_while() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			WHILE 1/0 = 0 LOOP
+				NULL;
+			END LOOP;
+		END;
+		$fn$;
+		CREATE FUNCTION f_fori() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			FOR i IN 1..3 BY 0 LOOP
+				NULL;
+			END LOOP;
+		END;
+		$fn$;
+		CREATE FUNCTION f_fors() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE r record;
+		BEGIN
+			FOR r IN SELECT 1/0 LOOP
+				NULL;
+			END LOOP;
+		END;
+		$fn$;
+		CREATE FUNCTION f_foreach() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE v int;
+		BEGIN
+			FOREACH v IN ARRAY NULL::int[] LOOP
+				NULL;
+			END LOOP;
+		END;
+		$fn$;
+		CREATE FUNCTION f_exit() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			LOOP
+				EXIT WHEN 1/0 = 0;
+			END LOOP;
+		END;
+		$fn$;
+		CREATE FUNCTION f_execsql() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE v int;
+		BEGIN
+			SELECT 1/0 INTO v;
+		END;
+		$fn$;
+		CREATE FUNCTION f_dynexec() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			EXECUTE 'SELECT 1/0';
+		END;
+		$fn$;
+		CREATE FUNCTION f_dynfors() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE r record;
+		BEGIN
+			FOR r IN EXECUTE 'SELECT 1/0' LOOP
+				NULL;
+			END LOOP;
+		END;
+		$fn$;
+		CREATE FUNCTION f_getdiag() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE v text;
+		BEGIN
+			GET STACKED DIAGNOSTICS v = MESSAGE_TEXT;
+		END;
+		$fn$;
+		CREATE FUNCTION f_open() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE c CURSOR FOR SELECT 1;
+		BEGIN
+			OPEN c(1);
+		END;
+		$fn$;
+		CREATE FUNCTION f_fetch() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE c CURSOR FOR SELECT 1;
+		DECLARE v int;
+		BEGIN
+			FETCH c INTO v;
+		END;
+		$fn$;
+		CREATE FUNCTION f_close() RETURNS void LANGUAGE plpgsql AS $fn$
+		DECLARE c CURSOR FOR SELECT 1;
+		BEGIN
+			CLOSE c;
+		END;
+		$fn$;
+		CREATE FUNCTION f_perform() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			PERFORM 1/0;
+		END;
+		$fn$;
+		CREATE FUNCTION f_commit() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			COMMIT;
+		END;
+		$fn$;
+		CREATE FUNCTION f_rollback() RETURNS void LANGUAGE plpgsql AS $fn$
+		BEGIN
+			ROLLBACK;
+		END;
+		$fn$;
+	$q$;
+
+	BEGIN PERFORM f_assign(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_if(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_case(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_while(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_fori(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_fors(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_foreach(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_exit(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_execsql(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_dynexec(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_dynfors(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_getdiag(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_open(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_fetch(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_close(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_perform(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_commit(); EXCEPTION WHEN others THEN NULL; END;
+	BEGIN PERFORM f_rollback(); EXCEPTION WHEN others THEN NULL; END;
+
+	EXECUTE 'DROP FUNCTION f_rollback()';
+	EXECUTE 'DROP FUNCTION f_commit()';
+	EXECUTE 'DROP FUNCTION f_perform()';
+	EXECUTE 'DROP FUNCTION f_close()';
+	EXECUTE 'DROP FUNCTION f_fetch()';
+	EXECUTE 'DROP FUNCTION f_open()';
+	EXECUTE 'DROP FUNCTION f_getdiag()';
+	EXECUTE 'DROP FUNCTION f_dynfors()';
+	EXECUTE 'DROP FUNCTION f_dynexec()';
+	EXECUTE 'DROP FUNCTION f_execsql()';
+	EXECUTE 'DROP FUNCTION f_exit()';
+	EXECUTE 'DROP FUNCTION f_foreach()';
+	EXECUTE 'DROP FUNCTION f_fors()';
+	EXECUTE 'DROP FUNCTION f_fori()';
+	EXECUTE 'DROP FUNCTION f_while()';
+	EXECUTE 'DROP FUNCTION f_case()';
+	EXECUTE 'DROP FUNCTION f_if()';
+	EXECUTE 'DROP FUNCTION f_assign()';
+END;
+$$;;

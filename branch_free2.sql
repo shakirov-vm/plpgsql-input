@@ -1,0 +1,20 @@
+DO $$
+DECLARE
+	r record;
+	c1 CURSOR FOR SELECT 1 AS a;
+	v int;
+	arr int[] := ARRAY[1, 2];
+BEGIN
+	FOR r IN SELECT 1 AS a LOOP
+		NULL;
+	END LOOP;
+
+	FOR r IN c1 LOOP
+		NULL;
+	END LOOP;
+
+	FOREACH v IN ARRAY arr LOOP
+		NULL;
+	END LOOP;
+END;
+$$;;

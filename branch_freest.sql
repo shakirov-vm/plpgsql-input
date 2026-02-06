@@ -1,0 +1,92 @@
+DO $$
+DECLARE
+	v int := 0;
+	r record;
+	c1 CURSOR FOR SELECT 1 AS a;
+	arr int[] := ARRAY[1, 2];
+BEGIN
+	EXECUTE $q$
+		DROP PROCEDURE IF EXISTS p_dummy();
+		CREATE PROCEDURE p_dummy()
+		LANGUAGE plpgsql
+		AS $fn$
+		BEGIN
+			NULL;
+		END;
+		$fn$;
+	$q$;
+
+	v := 1;
+	IF v = 1 THEN
+		NULL;
+	END IF;
+
+	CASE v
+		WHEN 1 THEN NULL;
+		ELSE NULL;
+	END CASE;
+
+	LOOP
+		IF false THEN
+			CONTINUE;
+		END IF;
+		EXIT WHEN true;
+	END LOOP;
+
+	WHILE false LOOP
+		NULL;
+	END LOOP;
+
+	FOR i IN 1..2 LOOP
+		NULL;
+	END LOOP;
+
+	FOR r IN SELECT 1 AS a LOOP
+		NULL;
+	END LOOP;
+
+	FOR r IN c1 LOOP
+		NULL;
+	END LOOP;
+
+	FOREACH v IN ARRAY arr LOOP
+		NULL;
+	END LOOP;
+
+	OPEN c1;
+	FETCH c1 INTO v;
+	CLOSE c1;
+
+	PERFORM 1;
+	SELECT 1 INTO v;
+	EXECUTE 'SELECT 1';
+	FOR r IN EXECUTE 'SELECT 1' LOOP
+		NULL;
+	END LOOP;
+
+	GET DIAGNOSTICS v = ROW_COUNT;
+
+	RAISE NOTICE 'x';
+	ASSERT true;
+
+	CALL p_dummy();
+
+	IF false THEN
+		RETURN;
+	END IF;
+	IF false THEN
+		RETURN NEXT 1;
+	END IF;
+	IF false THEN
+		RETURN QUERY SELECT 1;
+	END IF;
+	IF false THEN
+		COMMIT;
+	END IF;
+	IF false THEN
+		ROLLBACK;
+	END IF;
+
+	EXECUTE 'DROP PROCEDURE p_dummy()';
+END;
+$$;;
