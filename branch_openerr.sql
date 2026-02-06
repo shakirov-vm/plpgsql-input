@@ -1,0 +1,18 @@
+DO $$
+DECLARE
+	c2 CURSOR FOR SELECT 1 AS a;
+	c3 CURSOR (p int) FOR SELECT p AS a;
+BEGIN
+	BEGIN
+		OPEN c2(1);
+	EXCEPTION WHEN syntax_error THEN
+		NULL;
+	END;
+
+	BEGIN
+		OPEN c3;
+	EXCEPTION WHEN syntax_error THEN
+		NULL;
+	END;
+END;
+$$;;

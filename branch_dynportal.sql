@@ -1,0 +1,14 @@
+DO $$
+DECLARE
+	c refcursor;
+BEGIN
+	OPEN c FOR EXECUTE 'SELECT 1';
+	CLOSE c;
+
+	BEGIN
+		OPEN c FOR EXECUTE NULL;
+	EXCEPTION WHEN null_value_not_allowed THEN
+		NULL;
+	END;
+END;
+$$;;

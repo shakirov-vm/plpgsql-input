@@ -1,0 +1,11 @@
+DO $$
+DECLARE
+	r record;
+BEGIN
+	BEGIN
+		EXECUTE 'SELECT $1' USING r.a;
+	EXCEPTION WHEN others THEN
+		NULL;
+	END;
+END;
+$$;;

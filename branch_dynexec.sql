@@ -1,0 +1,50 @@
+DO $$
+DECLARE
+	v int;
+BEGIN
+	EXECUTE $q$
+		DROP TABLE IF EXISTS de_tmp;
+	$q$;
+
+	EXECUTE 'SELECT 1' INTO v;
+
+	BEGIN
+		EXECUTE 'SELECT 1 WHERE false' INTO STRICT v;
+	EXCEPTION WHEN no_data_found THEN
+		NULL;
+	END;
+
+	BEGIN
+		EXECUTE 'SELECT 1 UNION ALL SELECT 2' INTO STRICT v;
+	EXCEPTION WHEN too_many_rows THEN
+		NULL;
+	END;
+
+	BEGIN
+		EXECUTE 'CREATE TABLE de_tmp(id int)' INTO v;
+	EXCEPTION WHEN syntax_error THEN
+		NULL;
+	END;
+
+	BEGIN
+		EXECUTE 'SELECT 1 INTO TEMP de_selinto';
+	EXCEPTION WHEN feature_not_supported THEN
+		NULL;
+	END;
+
+	BEGIN
+		EXECUTE 'COPY (SELECT 1) TO STDOUT';
+	EXCEPTION WHEN feature_not_supported THEN
+		NULL;
+	END;
+
+	BEGIN
+		EXECUTE 'COMMIT';
+	EXCEPTION WHEN feature_not_supported THEN
+		NULL;
+	END;
+
+	EXECUTE 'DROP TABLE IF EXISTS de_tmp';
+	EXECUTE 'DROP TABLE IF EXISTS de_selinto';
+END;
+$$;;

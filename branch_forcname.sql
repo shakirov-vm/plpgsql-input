@@ -1,0 +1,10 @@
+DO $$
+DECLARE
+	c CURSOR FOR SELECT 1 AS v;
+	r record;
+BEGIN
+	FOR r IN c LOOP
+		PERFORM r.v;
+	END LOOP;
+END;
+$$;;
