@@ -1,0 +1,14 @@
+DO $$
+DECLARE
+	c2 CURSOR FOR SELECT 1 AS v;
+	r record;
+BEGIN
+	BEGIN
+		FOR r IN c2(1) LOOP
+			NULL;
+		END LOOP;
+	EXCEPTION WHEN syntax_error THEN
+		NULL;
+	END;
+END;
+$$;;

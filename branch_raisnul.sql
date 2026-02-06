@@ -1,0 +1,9 @@
+DO $$
+BEGIN
+	BEGIN
+		RAISE EXCEPTION USING MESSAGE = NULL;
+	EXCEPTION WHEN null_value_not_allowed THEN
+		NULL;
+	END;
+END;
+$$;;

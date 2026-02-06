@@ -1,0 +1,12 @@
+DO $$
+BEGIN
+	BEGIN
+		CASE 1
+			WHEN 2 THEN
+				NULL;
+		END CASE;
+	EXCEPTION WHEN case_not_found THEN
+		NULL;
+	END;
+END;
+$$;;

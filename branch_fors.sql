@@ -1,0 +1,9 @@
+DO $$
+DECLARE
+	r record;
+BEGIN
+	FOR r IN SELECT 1 AS a UNION ALL SELECT 2 AS a LOOP
+		NULL;
+	END LOOP;
+END;
+$$;;

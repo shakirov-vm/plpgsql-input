@@ -1,0 +1,11 @@
+DO $$
+DECLARE
+	v_context text;
+BEGIN
+	BEGIN
+		RAISE EXCEPTION 'boom';
+	EXCEPTION WHEN others THEN
+		GET STACKED DIAGNOSTICS v_context = PG_EXCEPTION_CONTEXT;
+	END;
+END;
+$$;;

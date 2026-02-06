@@ -1,0 +1,8 @@
+DO $$
+DECLARE
+	v_cnt bigint;
+BEGIN
+	PERFORM 1;
+	GET DIAGNOSTICS v_cnt = ROW_COUNT;
+END;
+$$;;
